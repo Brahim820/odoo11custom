@@ -1,0 +1,173 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dietfacts.dietfacts &#8212; customaddons 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dietfacts.dietfacts</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Dietfacts application</span>
+<span class="c1"># from openerp import models, fields, api</span>
+<span class="kn">from</span> <span class="nn">odoo</span> <span class="k">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">api</span>
+
+<span class="c1"># Extend product.template model with calories</span>
+
+<div class="viewcode-block" id="DietFacts_product_template"><a class="viewcode-back" href="../../index.html#dietfacts.dietfacts.DietFacts_product_template">[docs]</a><span class="k">class</span> <span class="nc">DietFacts_product_template</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    comments from dietfacts module</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;product.template&#39;</span>
+    <span class="n">_inherit</span> <span class="o">=</span> <span class="s1">&#39;product.template&#39;</span>
+
+    <span class="n">calories</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="s2">&quot;Calories&quot;</span><span class="p">)</span>
+    <span class="n">servingsize</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="s1">&#39;Serving Size&#39;</span><span class="p">)</span>
+    <span class="n">lastupdated</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Date</span><span class="p">(</span><span class="s1">&#39;Last Updated&#39;</span><span class="p">)</span>
+    <span class="n">nutrient_ids</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">One2many</span><span class="p">(</span><span class="s1">&#39;product.template.nutrient&#39;</span><span class="p">,</span><span class="s1">&#39;product_id&#39;</span><span class="p">,</span><span class="s1">&#39;Nutrients&#39;</span><span class="p">)</span>
+    
+    <span class="nd">@api</span><span class="o">.</span><span class="n">one</span>
+    <span class="nd">@api</span><span class="o">.</span><span class="n">depends</span><span class="p">(</span><span class="s1">&#39;nutrient_ids&#39;</span><span class="p">,</span><span class="s1">&#39;nutrient_ids.value&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_calcscore</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">currentscore</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">nutrient</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nutrient_ids</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">nutrient</span><span class="o">.</span><span class="n">nutrient_id</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;Sodium&#39;</span><span class="p">:</span>
+                <span class="n">currentscore</span> <span class="o">=</span> <span class="n">currentscore</span> <span class="o">+</span> <span class="p">(</span><span class="n">nutrient</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nutrition_score</span> <span class="o">=</span> <span class="n">currentscore</span>
+    <span class="n">nutrition_score</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="s2">&quot;Nutrition Score&quot;</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;_calcscore&quot;</span><span class="p">)</span></div>
+    
+<span class="k">class</span> <span class="nc">DietFacts_res_users_meal</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;res.users.meal&#39;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Char</span><span class="p">(</span><span class="s2">&quot;Meal Name&quot;</span><span class="p">)</span>
+    <span class="n">meal_date</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Datetime</span><span class="p">(</span><span class="s2">&quot;Meal Date&quot;</span><span class="p">)</span>
+    <span class="n">item_ids</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">One2many</span><span class="p">(</span><span class="s1">&#39;res.users.mealitem&#39;</span><span class="p">,</span><span class="s1">&#39;meal_id&#39;</span><span class="p">)</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2one</span><span class="p">(</span><span class="s1">&#39;res.users&#39;</span><span class="p">,</span><span class="s1">&#39;Meal User&#39;</span><span class="p">)</span>
+    <span class="n">largemeal</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Boolean</span><span class="p">(</span><span class="s2">&quot;Large Meal&quot;</span><span class="p">)</span>
+    
+    <span class="nd">@api</span><span class="o">.</span><span class="n">onchange</span><span class="p">(</span><span class="s1">&#39;totalcalories&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">check_totalcalories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalcalories</span> <span class="o">&gt;</span> <span class="mi">500</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">largemeal</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">largemeal</span> <span class="o">=</span> <span class="kc">False</span>
+             
+    <span class="nd">@api</span><span class="o">.</span><span class="n">one</span>
+    <span class="nd">@api</span><span class="o">.</span><span class="n">depends</span><span class="p">(</span><span class="s1">&#39;item_ids&#39;</span><span class="p">,</span><span class="s1">&#39;item_ids.servings&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_calccalories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">currentcalories</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">mealitem</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_ids</span><span class="p">:</span>
+            <span class="n">currentcalories</span> <span class="o">=</span> <span class="n">currentcalories</span> <span class="o">+</span> <span class="p">(</span><span class="n">mealitem</span><span class="o">.</span><span class="n">calories</span> <span class="o">*</span> <span class="n">mealitem</span><span class="o">.</span><span class="n">servings</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalcalories</span> <span class="o">=</span> <span class="n">currentcalories</span>
+       
+    <span class="n">totalcalories</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="s2">&quot;Total Meal Calories&quot;</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="s2">&quot;_calccalories&quot;</span><span class="p">)</span>
+    <span class="n">notes</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s1">&#39;Meal Notes&#39;</span><span class="p">)</span>
+    
+<span class="k">class</span> <span class="nc">DietFacts_res_users_mealitem</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;res.users.mealitem&#39;</span>
+    <span class="n">meal_id</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2one</span><span class="p">(</span><span class="s1">&#39;res.users.meal&#39;</span><span class="p">)</span>
+    <span class="n">item_id</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2one</span><span class="p">(</span><span class="s1">&#39;product.template&#39;</span><span class="p">,</span><span class="s1">&#39;Meal Item&#39;</span><span class="p">)</span>
+    <span class="n">servings</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="s1">&#39;Servings&#39;</span><span class="p">)</span>
+    <span class="n">calories</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Integer</span><span class="p">(</span><span class="n">related</span><span class="o">=</span><span class="s1">&#39;item_id.calories&#39;</span><span class="p">,</span> <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;Calories Per Serving&quot;</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">notes</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s2">&quot;Meal item notes&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">DietFacts_product_nutrient</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;product.nutrient&#39;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Char</span><span class="p">(</span><span class="s2">&quot;Nutrient Name&quot;</span><span class="p">)</span>
+    <span class="n">uom_id</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2one</span><span class="p">(</span><span class="s1">&#39;product.uom&#39;</span><span class="p">,</span><span class="s1">&#39;Unit of Measure&#39;</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s2">&quot;Description&quot;</span><span class="p">)</span>
+    
+<span class="k">class</span> <span class="nc">DietFacts_product_template_nutrient</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;product.template.nutrient&#39;</span>
+    <span class="n">nutrient_id</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2one</span><span class="p">(</span><span class="s1">&#39;product.nutrient&#39;</span><span class="p">,</span><span class="n">string</span><span class="o">=</span><span class="s2">&quot;Product Nutrient&quot;</span><span class="p">)</span>
+    <span class="n">product_id</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Many2one</span><span class="p">(</span><span class="s1">&#39;product.template&#39;</span><span class="p">)</span>
+    <span class="n">uom</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Char</span><span class="p">(</span><span class="n">related</span><span class="o">=</span><span class="s1">&#39;nutrient_id.uom_id.name&#39;</span><span class="p">,</span> <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;UOM&quot;</span><span class="p">,</span> <span class="n">readyonly</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="s1">&#39;Nutrient Value&#39;</span><span class="p">)</span>
+    <span class="n">dailypercent</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Float</span><span class="p">(</span><span class="s2">&quot;Daily Recommended Value&quot;</span><span class="p">)</span>
+    
+    
+
+    
+    
+    
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">customaddons</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, lks.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

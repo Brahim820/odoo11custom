@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="ProductScreenWidget">
+        <t t-jquery=".layout-table" t-operation="append">
+           <tr class="footer-row">
+                <td class="content-cell">
+                    <div class="chair-container">
+                        <div class="categories">
+                            <div class="category-list-scroller touch-scrollable">
+                                <div class="chair-list category-list" height="400px">
+                                     <span class='category js-category-switch'>
+                                    Chairs
+                                    </span>
+                                    <span class='pull-right category-simple-button js-category-switch add_seperator highlightc' >
+                                    Separator
+                                    </span>
+                                    <span class='pull-right category-simple-button js-category-switch chair_add' >
+                                    <i class="fa fa-plus"></i>
+                                    </span><span class='pull-right category-simple-button js-category-switch chair_remove' >
+                                    <i class="fa fa-minus"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="placeholder-ChairWidget" />
+                    </div>
+                </td>
+            </tr>
+        </t>
+    </t>
+
+
+    <t t-name="ChairButton">
+        <span class='category-simple-button js-category-switch chair-button'  ><t t-esc="widget.name"/></span>
+    </t>
+
+
+    <t t-extend="Orderline">
+        <t t-jquery=".product-name" t-operation="append">
+            <t t-if="line.get_chair()">
+                <span class="info orderline-note">
+                    <img src="/pos_chair_variant_mgmt/static/src/img/restaurant-table-and-chairs.png" height="20" width="20" hspace="10"/><t t-esc="line.get_chair()" />
+                </span>
+            </t>
+        </t>
+    </t>
+    
+
+<!-- 
+    <t t-extend='PosTicket'>
+        <t t-jquery='.receipt-orderlines' t-operation="inner">
+            <table t-foreach="orderlines" t-as="orderline">
+                <tr>
+                    <td>
+                        <t t-esc="orderline.get_product().display_name"/>
+                        <t t-if="orderline.get_discount() > 0">
+                            <div class="pos-disc-font">
+                                With a <t t-esc="orderline.get_discount()"/>% discount
+                            </div>
+                        </t>
+                    </td>
+                    <td class="pos-right-align">
+                        <t t-esc="orderline.get_quantity_str_with_unit()"/>
+                    </td>
+                    <td class="pos-right-align">
+                        <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                    </td>
+                    <tr t-if="orderline.seperator">-+-+-+-+-+-+-<strong>Course Separator</strong>-+-+-+-+-+-+-</tr>
+                </tr>
+                
+            </table>
+        </t>
+    </t> -->
+      <t t-extend='PosTicket'>
+        <t t-jquery='.receipt-orderlines' t-operation="inner" t-set='sepf' t-value='0'>
+            <table t-foreach="orderlines" t-as="orderline">
+                <tr>
+                    <td>
+                        <t t-esc="orderline.get_product().display_name"/>
+                        <t t-if="orderline.get_discount() > 0">
+                            <div class="pos-disc-font">
+                                With a <t t-esc="orderline.get_discount()"/>% discount
+                            </div>
+                        </t>
+                    </td>
+                    <td class="pos-right-align">
+                        <t t-esc="orderline.get_quantity_str_with_unit()"/>
+                    </td>
+                    <td class="pos-right-align">
+                        <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                    </td>
+                    <tr t-if="orderline.seperator"><t t-set='sepf' t-value='1'/></tr>
+                </tr>
+                
+            </table>
+        </t>
+    </t>
+
+    <t t-name="VarientPopupWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-selection">
+                <p class="title"><t t-esc=" widget.options.title || 'Select' " /></p>
+                <div class='selection scrollable-y touch-scrollable'>
+                    <t t-foreach="widget.list || []" t-as="item">
+                        <div t-attf-class="selection-item {{ widget.is_selected.call(widget, item.item) ? 'selected' : '' }}" t-att-data-item-index='item.item'>
+                             <t t-esc='item.label'/>
+                        </div>
+                    </t>
+                </div>
+                <div class="footer">
+                <div class="button confirm">
+                        Confirm 
+                    </div>
+                    <div class="button cancel">
+                        Cancel 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+     <!-- <t t-name="SelectionPopupWidget">
+        <div class="modal-dialog">
+            <div class="popup popup-selection">
+                <p class="title"><t t-esc=" widget.options.title || 'Select' " /></p>
+                <div class='selection scrollable-y touch-scrollable'>
+                    <t t-foreach="widget.list || []" t-as="item">
+                        <div t-attf-class="selection-item {{ widget.is_selected.call(widget, item.item) ? 'selected' : '' }}" t-att-data-item-index='item_index'>
+                            <t t-esc='item.label'/>
+                        </div>
+                    </t>
+                </div>
+                <div class="footer">
+                    <div class="button cancel">
+                        Cancel 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t> -->
+
+
+
+<!-- <t t-extend="Orderline">
+        <t t-jquery=".info-list" t-operation="append">
+            <t t-if="line.get_note()">
+                <li class="info orderline-note">
+                    <i class='fa fa-tag'/><t t-esc="line.get_note()" />
+                </li>
+            </t>
+        </t>
+    </t> -->
+
+    <t t-name="OrderlineVariantButton">
+        <div id="variant" class='control-button'>
+            <i class="fa fa-server"/>Variants
+        </div>
+    </t>
+    <t t-extend="Orderline">
+        <t t-jquery=".info-list" t-operation="append">            
+            <t t-if="line.get_variant()">
+                <span class="varient">
+                    Variants: <t t-esc="line.get_variant()" />
+                </span>
+                <br/>
+             </t>
+        </t>
+    </t>
+    <t t-extend="Orderline">
+        <t t-jquery=".info-list" t-operation="append">            
+            <t t-if="line.get_seperator()">
+                <span class="seperator">--+-+-+-+-+-+-+-Course-+-+-Separator-+-+-+-+-+-+-+--</span>
+            </t>
+        </t>
+    </t>
+
+</templates>

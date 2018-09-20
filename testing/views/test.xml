@@ -1,0 +1,44 @@
+<odoo>
+   <!--  <record id="pos_table_chair_action" model="ir.actions.act_window">
+    <field name="name">Chairs</field>
+    <field name="res_model">table.chair</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="arch" type="xml">
+    <tree>
+        <field name="name"/>
+        <field name="active"/>
+    </tree>
+    </field>
+    </record>
+    
+    
+    <record id="test_form_view" model="ir.ui.view">
+        <field name="name">pos.testing</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='pricelist_setting']" position="inside">
+                <field name="testing_var"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="pos_chair_serve_new" model="ir.ui.view">
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="model">pos.order</field>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='product_id']" position="after" >
+                    <field name="chair" />
+                </xpath>
+            </field>
+    </record>
+
+
+
+     <menuitem id="pos_menu_chairs"
+        name="Chairs"
+        parent="point_of_sale.menu_point_config_product"
+        sequence="4"
+        action="pos_table_chair_action"/> -->
+</odoo>

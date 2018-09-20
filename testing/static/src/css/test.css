@@ -1,0 +1,33 @@
+.btn-sq-sm {
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 10px;
+  }
+
+.pos .product .stock-tag-available {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    vertical-align: top;
+    color: white;
+    line-height: 13px;
+    background: green;
+    padding: 2px 5px;
+    border-radius: 2px;
+}
+
+.pos .product .stock-tag-not-available {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    vertical-align: top;
+    color: white;
+    line-height: 13px;
+    background: red;
+    padding: 2px 5px;
+    border-radius: 2px;
+}
+
+.setblur {
+    opacity: 0.3
+}

@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    
+    <record model="ir.ui.view" id="externalapi.list">
+      <field name="name">externalapi list</field>
+      <field name="model">externalapi.externalapi</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    
+
+    <!-- actions opening views on models -->
+    
+    <record model="ir.actions.act_window" id="externalapi.action_window">
+      <field name="name">externalapi window</field>
+      <field name="res_model">externalapi.externalapi</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    
+
+    <!-- server action to the one above -->
+    
+    <!-- <record model="ir.actions.server" id="externalapi.action_server">
+      <field name="name">externalapi server</field>
+      <field name="model_id" ref="model_externalapi_externalapi"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record> -->
+    
+
+    <!-- Top menu item -->
+    
+    <menuitem name="externalapi" id="externalapi.menu_root"/>
+    
+    <!-- menu categories -->
+    
+    <menuitem name="Menu 1" id="externalapi.menu_1" parent="externalapi.menu_root"/>
+    <!-- <menuitem name="Menu 2" id="externalapi.menu_2" parent="externalapi.menu_root"/> -->
+    
+    <!-- actions -->
+    
+    <menuitem name="List" id="externalapi.menu_1_list" parent="externalapi.menu_1"
+              action="externalapi.action_window"/>
+    <!-- <menuitem name="Server to list" id="externalapi" parent="externalapi.menu_2"
+              action="externalapi.action_server"/> -->
+    
+  </data>
+</odoo>

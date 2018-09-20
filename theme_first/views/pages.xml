@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- === Services Page === -->
+    <record id="services_page" model="website.page">
+        <field name="name">Services page</field>
+        <field name="website_published">True</field>
+        <field name="url">/services</field>
+        <field name="type">qweb</field>
+        <field name="key">theme_tutorial.services_page</field>
+        <field name="arch" type="xml">
+            <t t-name="theme_tutorial.services_page_template">
+                <t t-call="website.layout">
+                    <!-- website.layout is  a template -->
+                    <div id="wrap">
+                        <div class="container">
+                            <h1>Our Services</h1>
+                            <ul class="services">
+                                <li>Cloud Hosting</li>
+                                <li>Support</li>
+                                <li>Unlimited space</li>
+                            </ul>
+
+                            <!-- === Snippets' area === -->
+                            <div class="oe_structure" />
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
+     <!-- === Another Services Page === -->
+    <template id="another_services_page_template">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container">
+                    <h1>Another Services</h1>
+                    <ul class="services">
+                        <li>Cloud Hosting</li>
+                        <li>Support</li>
+                        <li>Unlimited space</li>
+                    </ul>
+
+                    <!-- === Snippets' area === -->
+                    <div class="oe_structure" />
+                </div>
+            </div>
+        </t>
+    </template>
+    <record id="another_services_page" model="website.page">
+        <field name="name">Another Services page</field>
+        <field name="website_published">True</field>
+        <field name="url">/another_services</field>
+        <field name="view_id" ref="another_services_page_template"/>
+    </record>
+
+    <record id="services_page_link" model="website.menu">
+      <field name="name">Services</field>
+      <field name="page_id" ref="services_page"/>
+      <field name="parent_id" ref="website.main_menu" />
+      <field name="sequence" type="int">99</field>
+    </record>
+
+    <record id="another_services_page_link" model="website.menu">
+      <field name="name">Another Services</field>
+      <field name="page_id" ref="another_services_page"/>
+      <field name="parent_id" ref="website.main_menu" />
+      <field name="sequence" type="int">100</field>
+    </record>
+
+</odoo>

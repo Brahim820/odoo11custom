@@ -1,0 +1,72 @@
+<odoo>
+    <record id="pos_table_chair_action" model="ir.actions.act_window">
+    <field name="name">Chairs</field>
+    <field name="res_model">table.chair</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="arch" type="xml">
+    <tree>
+        <field name="name"/>
+        <field name="active"/>
+    </tree>
+    </field>
+    </record>
+
+    <record id="pos_chair_serve_new" model="ir.ui.view">
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="model">pos.order</field>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='product_id']" position="after" >
+                    <field name="chair" />
+                    <field name='variant_ids' widget="many2many_tags" />
+                </xpath>
+                <xpath expr="//form/group/field[@name='product_id']" position="after" >
+                    <field name="chair" />
+                    <field name='variant_ids' widget="many2many_tags"/>
+                </xpath>
+            </field>
+    </record>
+
+
+
+     <menuitem id="pos_menu_chairs"
+        name="Chairs"
+        parent="point_of_sale.menu_point_config_product"
+        sequence="4"
+        action="pos_table_chair_action"/>
+
+
+        <record id="pos_variant_action" model="ir.actions.act_window">
+    <field name="name">Variants</field>
+    <field name="res_model">pos.variants</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="arch" type="xml">
+    <tree>
+        <field name="name"/>
+        <field name="price"/>
+
+    </tree>
+    </field>
+    </record>
+
+    <record id="pos_categ_varient_new" model="ir.ui.view">
+        <field name="inherit_id" ref="point_of_sale.product_pos_category_form_view"/>
+        <field name="model">pos.category</field>
+            <field name="arch" type="xml">
+                <xpath expr="//div/group/field[@name='parent_id']" position="after" >
+                    <field name="variant_ids" widget="many2many_tags"/>
+                    <field name="default_popup_for_varient" />
+                    <field name="is_add_ons" />
+                </xpath>
+            </field>
+    </record>
+
+
+
+     <menuitem id="pos_menu_variant"
+        name="Variants"
+        parent="point_of_sale.menu_point_config_product"
+        sequence="4"
+        action="pos_variant_action"/>
+</odoo>

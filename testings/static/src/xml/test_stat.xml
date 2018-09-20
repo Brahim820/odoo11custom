@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="ProductScreenWidget">
+        <t t-jquery=".layout-table" t-operation="append">
+           <tr class="footer-row">
+                <td class="content-cell">
+                    <div class="chair-container">
+                        <div class="categories">
+                            <div class="category-list-scroller touch-scrollable">
+                                <div class="chair-list category-list" height="400px">
+                                     <span class='category js-category-switch chair-button'>
+                                    Chairs
+                                    </span>
+                                    
+                                    <span class='pull-right category-simple-button js-category-switch chair_add' >
+                                    <i class="fa fa-plus"></i>
+                                    </span><span class='pull-right category-simple-button js-category-switch chair_remove' >
+                                    <i class="fa fa-minus"></i>
+                                    </span>
+                                    <span class='pull-right category-simple-button js-category-switch chair_remove' >
+                                    <i class="fa fa-long-arrow-right">Add Seperator</i>
+                                    </span>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    <span class="placeholder-ChairWidget" />
+                    </div>
+                </td>
+            </tr>
+        </t>
+    </t>
+
+
+    <!-- <t t-extend="ProductScreenWidget">
+        <t t-jquery=".chair-add" t-operation="before">
+          <span class='category-simple-button js-category-switch chair-button' >
+                                    C3
+                                    </span>
+        </t>
+    </t> -->
+
+    <t t-name="testing">
+        <div class='control-button'>
+             Sk Testing
+        </div>
+    </t>
+
+
+    <t t-name="testing2">
+        <span class='category-simple-button js-category-switch chair-button' ><t t-esc="widget.name"/></span>
+    </t>
+ <t t-extend="Orderline">
+        <t t-jquery=".product-name" t-operation="append">
+            <t t-if="line.get_chair()">
+                <span class="info orderline-note">
+                    <i class='fa fa-wheelchair'/><t t-esc="line.get_chair()" />
+                </span>
+            </t>
+        </t>
+    </t>
+    
+</templates>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <!-- <t t-extend="ProductScreenWidget">
+        <t t-jquery=".layout-table" t-operation="append">
+           <tr class="footer-row">
+                <td class="content-cell">
+                    <div class="chair-container">
+                        <div class="categories">
+                            <div class="category-list-scroller touch-scrollable">
+                                <div class="chair-list category-list" height="400px">
+                                     <span class='category js-category-switch chair-button'>
+                                    Chairs
+                                    </span>
+                                    
+                                    <span class='pull-right category-simple-button js-category-switch chair_add' >
+                                    <i class="fa fa-plus"></i>
+                                    </span><span class='pull-right category-simple-button js-category-switch chair_remove' >
+                                    <i class="fa fa-minus"></i>
+                                    </span>
+                                    <span class='pull-right category-simple-button js-category-switch chair_remove' >
+                                    <i class="fa fa-long-arrow-right">Add Seperator</i>
+                                    </span>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    <span class="placeholder-ChairWidget" />
+                    </div>
+                </td>
+            </tr>
+        </t>
+    </t> -->
+
+
+    <!-- <t t-extend="ProductScreenWidget">
+        <t t-jquery=".chair-add" t-operation="before">
+          <span class='category-simple-button js-category-switch chair-button' >
+                                    C3
+                                    </span>
+        </t>
+    </t> -->
+
+   <!--  <t t-name="testing">
+        <div class='control-button'>
+             Sk Testing
+        </div>
+    </t> -->
+
+
+    <!-- <t t-name="testing2">
+        <span class='category-simple-button js-category-switch chair-button' ><t t-esc="widget.name"/></span>
+    </t> -->
+<!-- commented in parts -->
+<!--     <t t-extend="Product">
+        <t t-jquery=".product-img" t-operation="append">
+            <t t-if="product.type=='product'">
+                <t t-if="product.qty_available &lt;=0">
+                    <span class="stock-tag-not-available">
+                        <t t-esc="0"/> -->
+                        <!-- 0 instead product.qty_availbale -->
+                    <!-- </span>
+                </t>
+                <t t-if="product.qty_available>0">
+                    <span class="stock-tag-available">
+                        <t t-esc="product.qty_available"/>
+                    </span>
+                </t>
+            </t>
+        </t>
+    </t> -->
+    <!-- comment ends -->
+    <!-- see t-operation -->
+    <t t-extend="Product">
+        <t t-jquery=".product" t-operation="replace">
+            <t t-if="product.type=='product'">
+                <t t-if="product.qty_available &lt;=0">
+                    <span class='product setblur' t-att-data-product-id="product.id">
+                        <div class="product-img">
+                            <img t-att-src='image_url' /> 
+                            <!-- lks -->
+                            <span class="stock-tag-not-available">
+                                <t t-esc="0"/>
+                                <!-- 0 instead product.qty_availbale -->
+                            </span>
+                            <!-- lks -->
+                            <!-- /* lalit.kumar@prolitus.com code starts*/ -->
+                            <!-- <span class="stock-tag">
+                                <t t-esc="product.qty_available"/>
+                            </span> -->
+                            <!-- /* lalit.kumar@prolitus.com code ends*/ -->
+                            <t t-if="!product.to_weight">
+                                
+                                <span class="price-tag">
+                                    <t t-esc="widget.format_currency(product.get_price(pricelist, 1),'Product Price')"/>
+                                </span>
+                            </t>
+                            <t t-if="product.to_weight">
+                                <span class="price-tag">
+                                    <t t-esc="widget.format_currency(product.get_price(pricelist, 1),'Product Price')+'/'+widget.pos.units_by_id[product.uom_id[0]].name"/>
+                                </span>
+                            </t>
+                        </div>
+            
+                        <div class="product-name">
+                            <t t-esc="product.display_name"/>
+                        </div>
+                    </span>
+                </t>
+                <t t-if="product.qty_available &gt; 0">
+                    <span class='product' t-att-data-product-id="product.id">
+                        <div class="product-img">
+                            <img t-att-src='image_url' /> 
+                            <span class="stock-tag-available">
+                                <t t-esc="product.qty_available"/>
+                            </span>
+                            <!-- /* lalit.kumar@prolitus.com code starts*/ -->
+                            <!-- <span class="stock-tag">
+                                <t t-esc="product.qty_available"/>
+                            </span> -->
+                            <!-- /* lalit.kumar@prolitus.com code ends*/ -->
+                            <t t-if="!product.to_weight">
+                                
+                                <span class="price-tag">
+                                    <t t-esc="widget.format_currency(product.get_price(pricelist, 1),'Product Price')"/>
+                                </span>
+                            </t>
+                            <t t-if="product.to_weight">
+                                <span class="price-tag">
+                                    <t t-esc="widget.format_currency(product.get_price(pricelist, 1),'Product Price')+'/'+widget.pos.units_by_id[product.uom_id[0]].name"/>
+                                </span>
+                            </t>
+                        </div>
+            
+                        <div class="product-name">
+                            <t t-esc="product.display_name"/>
+                        </div>
+                    </span>
+                </t>
+            </t>
+            <t t-if="product.type!='product'">
+                <span class='product' t-att-data-product-id="product.id">
+                    <div class="product-img">
+                        <img t-att-src='image_url' /> 
+                        <!-- /* lalit.kumar@prolitus.com code starts*/ -->
+                        <!-- <span class="stock-tag">
+                            <t t-esc="product.qty_available"/>
+                        </span> -->
+                        <!-- /* lalit.kumar@prolitus.com code ends*/ -->
+                        <t t-if="!product.to_weight">
+                            
+                            <span class="price-tag">
+                                <t t-esc="widget.format_currency(product.get_price(pricelist, 1),'Product Price')"/>
+                            </span>
+                        </t>
+                        <t t-if="product.to_weight">
+                            <span class="price-tag">
+                                <t t-esc="widget.format_currency(product.get_price(pricelist, 1),'Product Price')+'/'+widget.pos.units_by_id[product.uom_id[0]].name"/>
+                            </span>
+                        </t>
+                    </div>
+        
+                    <div class="product-name">
+                        <t t-esc="product.display_name"/>
+                    </div>
+                </span>
+            </t>
+        </t>
+    </t>
+
+    <t t-name="testing3">
+        <t t-esc="widget.qty_available"/>
+    </t>
+
+ <!-- <t t-extend="Orderline">
+        <t t-jquery=".product-name" t-operation="append">
+            <t t-if="line.get_chair()">
+                <span class="info orderline-note">
+                    <i class='fa fa-wheelchair'/><t t-esc="line.get_chair()" />
+                </span>
+            </t>
+        </t>
+    </t> -->
+    
+</templates>
